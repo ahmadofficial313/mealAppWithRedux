@@ -1,24 +1,25 @@
-import { Text, View, StyleSheet,Image, ScrollView, Button } from 'react-native';
+import { Text, View, StyleSheet,Image, ScrollView } from 'react-native';
 import { MEALS } from '../data/dummy-data';
 import MealDetail from '../components/MealDetail';
 import Subtitle from '../components/mealdetail/Subtitle';
 import List from '../components/mealdetail/List';
-import { useContext, useLayoutEffect } from 'react';
+import {  useLayoutEffect } from 'react';
 import IconButton from '../components/IconButton';
-import { FavouriteContext } from '../store/context/favourite-Context';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { addFavourite,removeFavourite } from '../store/redux/favourite';
 function MealDetailScreen({ route, navigation }) {
-    const FavouriteMealContext=useContext(FavouriteContext)
     const id = route.params.mealID;
+    const FavouriteMeals = useSelector(state => state.favouriteMeals); // Accessing favouriteMeals from Redux store
 
     const mealDetail = MEALS.find((item) => item.id === id);
-   const isFavourite=FavouriteMealContext.ids.includes(id)
+    const isFavourite = FavouriteMeals.ids.includes(id);
+    const dispatch=useDispatch()
 function changeFavouriteSatusHandler(){
     if(isFavourite){
-        FavouriteMealContext.removeFavourite(id);
+       dispatch(removeFavourite({id:id}))
     }
     else{
-        FavouriteMealContext.addFavourite(id)
+        dispatch(addFavourite({id:id}))
     }
 }
 useLayoutEffect(()=>{

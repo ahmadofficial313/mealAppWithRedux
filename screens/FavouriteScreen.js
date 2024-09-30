@@ -1,12 +1,11 @@
-import { useContext } from "react";
 import { View,Text,StyleSheet } from "react-native";
-import { FavouriteContext } from '../store/context/favourite-Context';
 import MealList from "../components/mealist/MealList";
 import { MEALS } from "../data/dummy-data";
 import Entypo from '@expo/vector-icons/Entypo';
+import { useSelector } from "react-redux";
 function FavouriteScreen({}){
-    const FavouriteMealContext=useContext(FavouriteContext)
-    const favouriteMeal=MEALS.filter(meal=> FavouriteMealContext.ids.includes(meal.id))
+    const FavouriteMealIds=useSelector((state)=>state.favouriteMeals.ids)
+    const favouriteMeal=MEALS.filter(meal=> FavouriteMealIds.includes(meal.id))
    
     if(favouriteMeal.length===0){
         return(
